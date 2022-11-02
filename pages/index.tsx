@@ -9,7 +9,7 @@ export default function Home() {
   const click = async() => {
     try {
       const device = await navigator.bluetooth.requestDevice({
-        optionalServices: ["battery_service", "device_information"],
+        optionalServices: ["battery_service", "device_information", "0000180f-0000-1000-8000-00805f9b34fb", 0x1801],
         acceptAllDevices: true,
       })
 
@@ -42,6 +42,8 @@ export default function Home() {
           });
         });
 
+
+
       promise.then(() => {
         setDeviceInfo({deviceName, batteryPercent})
       })
@@ -51,6 +53,8 @@ export default function Home() {
       alert("error while fetching device details")
     }
   }
+
+  console.log(deviceInfo)
 
   return (
     <div>
