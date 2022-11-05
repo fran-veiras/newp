@@ -1,71 +1,30 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { useState } from 'react'
-import styles from '../styles/Home.module.css'
+import { useState } from "react";
+import { Container } from "../components/styles/Container";
+import { Navbar } from "../components/styles/NavBar";
+import { Spacer } from "../components/styles/Spacer";
 
 export default function Home() {
-  const [deviceInfo, setDeviceInfo] = useState<false | any>(false)
-
-  const click = async() => {
-    try {
-      const device = await navigator.bluetooth.requestDevice({
-        optionalServices: ["battery_service", "device_information", "0000180f-0000-1000-8000-00805f9b34fb", 0x1801],
-        acceptAllDevices: true,
-      })
-
-      const deviceName = device.gatt.device.name
-      const server = await device.gatt.connect()
-
-      const batteryService = await server.getPrimaryService("battery_service")
-      const infoService = await server.getPrimaryService("device_information")
-
-      const batteryLevelCharacteristic = await batteryService.getCharacteristic(
-        "battery_level"
-      )
-
-      const batteryLevel = await batteryLevelCharacteristic.readValue();
-      const batteryPercent = await batteryLevel.getUint8(0);
-
-      const infoCharacteristics = await infoService.getCharacteristics();
-
-      console.log(infoCharacteristics);
-      let infoValues = [];
-      
-      const promise = new Promise((resolve, reject) => {
-          infoCharacteristics.forEach(async (characteristic, index, array) => {
-            // Returns a buffer
-            const value = await characteristic.readValue();
-            console.log(new TextDecoder().decode(value));
-            // Convert the buffer to string
-            infoValues.push(new TextDecoder().decode(value));
-            if (index === array.length - 1) resolve(console.log("ok"));
-          });
-        });
-
-
-
-      promise.then(() => {
-        setDeviceInfo({deviceName, batteryPercent})
-      })
-
-    } catch(err) {
-      console.log(err)
-      alert("error while fetching device details")
-    }
+  const [scale, setScale] = useState<false | string>(false)
+  const rescale = () => {
+      setScale('scale-x-50 scale-y-50')
   }
 
-  console.log(deviceInfo)
-
+  const val = 50
   return (
-    <div>
-      <h1>Hola</h1>
-      <button onClick={click}>getDetails</button>
-      {deviceInfo && 
-        <>
-          <h1>{deviceInfo.deviceName}</h1>
-          <h1>{deviceInfo.batteryPercent}</h1>
-        </>
-      }
+    <div className={`w-screen h-screen bg-red-500 ${ typeof window !== "undefined" && scale ? 'scale-x-50 scale-y-50' : ''}`}>
+    <Navbar />
+    <Container>
+      <Spacer size={5}/>
+      <h1>Lorem Ipsum</h1>
+      <p>
+         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla non ipsum vel erat posuere commodo. Cras mattis vel ligula in fermentum. Fusce sit amet tortor eget quam fringilla molestie ac sodales sapien. Phasellus neque ante, consequat ac tortor rhoncus, ornare finibus augue. Fusce et faucibus ante. Suspendisse at efficitur justo, a sagittis odio. Ut tincidunt tincidunt finibus. Praesent mauris nisi, malesuada vitae tortor id, condimentum consectetur nisl. Cras nibh odio, iaculis eu orci ut, elementum hendrerit nunc. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nunc porttitor consectetur massa, a mollis lacus condimentum sed. Aenean vulputate gravida libero sed vestibulum. Fusce venenatis in sapien non pellentesque. Sed urna lectus, imperdiet a ex a, tristique fringilla tellus. Vestibulum euismod nibh et nibh venenatis, quis laoreet ipsum maximus. Curabitur tincidunt ultrices turpis bibendum hendrerit.
+
+Fusce eget mollis urna. Nam sapien purus, pharetra eget augue id, tempus volutpat sapien. Vestibulum vel eros dui. Aliquam ultricies nunc sed eleifend semper. Curabitur ut ornare diam. Phasellus auctor, ex at vulputate cursus, diam odio accumsan diam, vel consectetur nisl quam vel risus. Sed convallis orci vel venenatis fringilla. Donec at scelerisque est. In et tempus enim, non posuere neque. Phasellus ornare erat et purus rhoncus porta. Nulla elit mi, facilisis nec consequat sit amet, pulvinar nec neque. Cras feugiat neque id nisi porttitor, non euismod quam feugiat. Proin fringilla lectus massa, non ullamcorper nunc vulputate id. Nam vitae mattis metus, a accumsan risus. Suspendisse porta lacinia suscipit.
+
+Donec tincidunt ipsum eget rutrum venenatis. Fusce finibus tempor lorem ac porttitor. Nunc aliquet facilisis pharetra. Pellentesque lacinia eleifend diam, eu tempus orci iaculis ac. Ut commodo sollicitudin vehicula. Suspendisse a efficitur ligula. Sed venenatis placerat consequat. Sed et convallis risus.
+      </p>
+      <button onClick={rescale}>scale</button>
+    </Container>
     </div>
   )
 }
