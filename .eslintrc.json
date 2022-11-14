@@ -1,0 +1,61 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "overrides": [
+        {
+        "files": ["**/*.ts", "**/*.tsx"],
+        "parser": "@typescript-eslint/parser",
+        "plugins": ["@typescript-eslint"],
+        "extends": [
+            "eslint:recommended", 
+            "plugin:@typescript-eslint/recommended",
+            "plugin:@typescript-eslint/eslint-recommended"
+        ],
+        "rules": {
+            "@typescript-eslint/indent": ["off", "tab"],
+            "@typescript-eslint/quotes": ["warn", "single"],
+            "@typescript-eslint/no-unused-vars": "warn",
+            "@typescript-eslint/no-explicit-any": [0],
+            "@typescript-eslint/ban-ts-comment": ["off"]
+            // "no-console": ["error", { "allow": ["warn", "error", "info"]}]
+          }
+        }
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "indent": [
+            "off",
+            "tab"
+        ],
+        "linebreak-style": [
+            "off",
+            "unix"
+        ],
+        "quotes": [
+            "warn",
+            "single"
+        ],
+        "semi": [
+            "off",
+            "never"
+        ],
+        "react/react-in-jsx-scope": [
+            "off"
+        ],
+        "react/prop-types": ["off"]
+    }
+}

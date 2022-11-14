@@ -1,7 +1,4 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import { useState } from 'react'
-import styles from '../styles/Home.module.css'
 
 export default function Home() {
   const [deviceInfo, setDeviceInfo] = useState<false | any>(false)
@@ -9,18 +6,18 @@ export default function Home() {
   const click = async() => {
     try {
       const device = await navigator.bluetooth.requestDevice({
-        optionalServices: ["battery_service", "device_information"],
+        optionalServices: ['battery_service', 'device_information'],
         acceptAllDevices: true,
       })
 
       const deviceName = device.gatt.device.name
       const server = await device.gatt.connect()
 
-      const batteryService = await server.getPrimaryService("battery_service")
-      const infoService = await server.getPrimaryService("device_information")
+      const batteryService = await server.getPrimaryService('battery_service')
+      const infoService = await server.getPrimaryService('device_information')
 
       const batteryLevelCharacteristic = await batteryService.getCharacteristic(
-        "battery_level"
+        'battery_level'
       )
 
       const batteryLevel = await batteryLevelCharacteristic.readValue();
@@ -29,7 +26,7 @@ export default function Home() {
       const infoCharacteristics = await infoService.getCharacteristics();
 
       console.log(infoCharacteristics);
-      let infoValues = [];
+      const infoValues = [];
       
       const promise = new Promise((resolve, reject) => {
           infoCharacteristics.forEach(async (characteristic, index, array) => {
@@ -38,7 +35,7 @@ export default function Home() {
             console.log(new TextDecoder().decode(value));
             // Convert the buffer to string
             infoValues.push(new TextDecoder().decode(value));
-            if (index === array.length - 1) resolve(console.log("ok"));
+            if (index === array.length - 1) resolve(console.log('ok'));
           });
         });
 
@@ -48,7 +45,7 @@ export default function Home() {
 
     } catch(err) {
       console.log(err)
-      alert("error while fetching device details")
+      alert('error while fetching device details')
     }
   }
 
